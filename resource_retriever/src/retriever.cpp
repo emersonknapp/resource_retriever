@@ -32,7 +32,7 @@
 #include <string>
 #include <vector>
 
-#include <curl/curl.h>
+// #include <curl/curl.h>
 
 #include "ament_index_cpp/get_package_share_directory.hpp"
 
@@ -45,23 +45,23 @@ public:
   CURLStaticInit()
   : initialized_(false)
   {
-    CURLcode ret = curl_global_init(CURL_GLOBAL_ALL);
-    if (ret != 0)
-    {
-      fprintf(stderr, "Error initializing libcurl! retcode = %d", ret);
-    }
-    else
-    {
-      initialized_ = true;
-    }
+    // CURLcode ret = curl_global_init(CURL_GLOBAL_ALL);
+    // if (ret != 0)
+    // {
+    //   fprintf(stderr, "Error initializing libcurl! retcode = %d", ret);
+    // }
+    // else
+    // {
+    //   initialized_ = true;
+    // }
   }
 
   ~CURLStaticInit()
   {
-    if (initialized_)
-    {
-      curl_global_cleanup();
-    }
+    // if (initialized_)
+    // {
+    //   curl_global_cleanup();
+    // }
   }
 
   bool initialized_;
@@ -70,14 +70,14 @@ static CURLStaticInit g_curl_init;
 
 Retriever::Retriever()
 {
-  curl_handle_ = curl_easy_init();
+  // curl_handle_ = curl_easy_init();
 }
 
 Retriever::~Retriever()
 {
   if (curl_handle_)
   {
-    curl_easy_cleanup(curl_handle_);
+    // curl_easy_cleanup(curl_handle_);
   }
 }
 
@@ -121,28 +121,28 @@ MemoryResource Retriever::get(const std::string& url)
     mod_url = "file://" + package_path + mod_url;
   }
 
-  curl_easy_setopt(curl_handle_, CURLOPT_URL, mod_url.c_str());
-  curl_easy_setopt(curl_handle_, CURLOPT_WRITEFUNCTION, curlWriteFunc);
-
-  char error_buffer[CURL_ERROR_SIZE];
-  curl_easy_setopt(curl_handle_, CURLOPT_ERRORBUFFER , error_buffer);
+  // curl_easy_setopt(curl_handle_, CURLOPT_URL, mod_url.c_str());
+  // curl_easy_setopt(curl_handle_, CURLOPT_WRITEFUNCTION, curlWriteFunc);
+  //
+  // char error_buffer[CURL_ERROR_SIZE];
+  // curl_easy_setopt(curl_handle_, CURLOPT_ERRORBUFFER , error_buffer);
 
   MemoryResource res;
   MemoryBuffer buf;
-  curl_easy_setopt(curl_handle_, CURLOPT_WRITEDATA, &buf);
+  // curl_easy_setopt(curl_handle_, CURLOPT_WRITEDATA, &buf);
 
-  CURLcode ret = curl_easy_perform(curl_handle_);
-  if (ret != 0)
-  {
-    throw Exception(mod_url, error_buffer);
-  }
-  else if (!buf.v.empty())
-  {
-    res.size = buf.v.size();
-    // Converted from boost::shared_array, see: https://stackoverflow.com/a/8624884
-    res.data.reset(new uint8_t[res.size], std::default_delete<uint8_t[]>());
-    memcpy(res.data.get(), &buf.v[0], res.size);
-  }
+  // CURLcode ret = curl_easy_perform(curl_handle_);
+  // if (ret != 0)
+  // {
+  //   throw Exception(mod_url, error_buffer);
+  // }
+  // else if (!buf.v.empty())
+  // {
+  //   res.size = buf.v.size();
+  //   // Converted from boost::shared_array, see: https://stackoverflow.com/a/8624884
+  //   res.data.reset(new uint8_t[res.size], std::default_delete<uint8_t[]>());
+  //   memcpy(res.data.get(), &buf.v[0], res.size);
+  // }
 
   return res;
 }

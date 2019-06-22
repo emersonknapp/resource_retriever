@@ -13,7 +13,7 @@ endif()
 find_package(ament_cmake_ros REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 # TODO(wjwwood): remove libcurl_vendor and just use system curl when possible
-find_package(libcurl_vendor REQUIRED)
+# find_package(libcurl_vendor REQUIRED)
 
 # TODO(wjwwood): split cpp and python apis into separate packages and fix python api
 
@@ -25,7 +25,7 @@ target_include_directories(${PROJECT_NAME}
 )
 ament_target_dependencies(${PROJECT_NAME}
   ament_index_cpp
-  libcurl_vendor
+  # libcurl_vendor
 )
 # Causes the visibility macros to use dllexport rather than dllimport,
 # which is appropriate when building the dll but not consuming it.
@@ -36,7 +36,7 @@ ament_export_include_directories(include)
 ament_export_interfaces(${PROJECT_NAME} HAS_LIBRARY_TARGET)
 
 ament_export_dependencies(ament_index_cpp)
-ament_export_dependencies(libcurl_vendor)
+# ament_export_dependencies(libcurl_vendor)
 
 if(BUILD_TESTING)
   # TODO(wjwwood): add ament linters
